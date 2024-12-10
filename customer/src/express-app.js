@@ -5,7 +5,7 @@ const { customer, appEvents } = require("./api");
 const logger = require("./utils/logger"); // Import the logger middleware
 const HandleErrors = require("./utils/error-handler");
 
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
   app.use(express.json());
   app.use(cors());
   app.use(express.static(__dirname + "/public"));
@@ -13,15 +13,17 @@ module.exports = async (app) => {
   app.use(logger);
 
   //api
-  customer(app);
+  //customer(app);
+  //api
+  customer(app, channel);
 
   //listen to events
-  appEvents(app);
+  //appEvents(app);
 
   //const channel = await CreateChannel();
 
   //customer(app, channel);
 
   // error handling
-  app.use(HandleErrors);
+  //app.use(HandleErrors);
 };

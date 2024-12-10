@@ -1,8 +1,10 @@
 const CustomerService = require("../services/customer-service");
 const UserAuth = require("./middlewares/auth");
+const { SubscribeMessage } = require("../utils");
 
-module.exports = (app) => {
+module.exports = (app, channel) => {
   const service = new CustomerService();
+  SubscribeMessage(channel, service);
 
   app.get("/", (req, res) => {
     return res.status(200).json("Customer Service  listen on PORT 8001");

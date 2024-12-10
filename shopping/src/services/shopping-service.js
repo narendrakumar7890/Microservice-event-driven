@@ -52,7 +52,7 @@ class ShoppingService {
         qty,
         isRemove
       );
-      console.log("cartResult: ", cartResult);
+      //console.log("cartResult: ", cartResult);
 
       return FormateData(cartResult);
     } catch (error) {
@@ -63,7 +63,7 @@ class ShoppingService {
   async SubscribeEvents(payload) {
     console.log("Triggering.... Shopping Events");
 
-    //payload = JSON.parse(payload);
+    payload = JSON.parse(payload);
 
     const { event, data } = payload;
 

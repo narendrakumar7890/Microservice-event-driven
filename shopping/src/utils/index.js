@@ -1,8 +1,15 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const amqp = require("amqplib");
 
-const { APP_SECRET } = require("../config");
+const {
+  APP_SECRET,
+  MESSAGE_BROKER_URL,
+  EXCHANGE_NAME,
+  QUEUE_NAME,
+  SHOPPING_BINDING_KEY,
+} = require("../config");
 
 //Utility functions
 module.exports.GenerateSalt = async () => {
@@ -54,4 +61,42 @@ module.exports.FormateData = (data) => {
 module.exports.PublishCustomerEvent = async (payload) => {
   // Perform some operations here
   axios.post("http://localhost:8000/customer/app-events", { payload });
+};
+
+/****************************** Message Broker *************************************** */
+module.exports.CreateChannel = async () => {
+  try {
+    const connection = await amqp.connect(MESSAGE_BROKER_URL);
+    const channel = await connection.createChannel();
+    await channel.assertExchange(EXCHANGE_NAME, "direct", false);
+    console.log("RabbitMQ Channel Created in Shopping Service");
+    return channel;
+  } catch (error) {
+    console.error(
+      "Error ============ RabbitMQ Channel Failed to create in Shopping Service"
+    );
+    console.log(error);
+    throw error;
+  }
+};
+
+module.exports.PublishMessage = async (channel, binding_key, message) => {
+  try {
+    await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
+    console.log("Shopping service Publish Message" + message);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports.SubscribeMessage = async (channel, service) => {
+  const appQueue = await channel.assertQueue(QUEUE_NAME);
+  channel.bindQueue(appQueue.queue, EXCHANGE_NAME, SHOPPING_BINDING_KEY);
+
+  channel.consume(appQueue.queue, (data) => {
+    console.log("Shopping service received data");
+    console.log(data.content.toString());
+    service.SubscribeEvents(data.content.toString());
+    channel.ack(data);
+  });
 };

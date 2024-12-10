@@ -1,9 +1,15 @@
 const ProductService = require("../services/product-service");
 //const CustomerService = require("../services/customer-service");
 const UserAuth = require("./middlewares/auth");
-const { PublishCustomerEvent, PublishShoppingEvent } = require("../utils");
+// const {
+//   PublishCustomerEvent,
+//   PublishShoppingEvent,
+//   ,
+// } = require("../utils");
+const { CUSTOMER_BINDING_KEY, SHOPPING_BINDING_KEY } = require("../config");
+const { PublishMessage, SubscribeMessage } = require("../utils");
 
-module.exports = (app) => {
+module.exports = (app, channel) => {
   const service = new ProductService();
   //const customerService = new CustomerService();
 
@@ -70,7 +76,8 @@ module.exports = (app) => {
         { productId: req.body._id },
         "ADD_TO_WISHLIST"
       );
-      PublishCustomerEvent(data);
+      PublishMessage(channel, CUSTOMER_BINDING_KEY, JSON.stringify(data));
+      //PublishCustomerEvent(data);
       //const product = await service.GetProductById(req.body._id);
       //const wishList = await customerService.AddToWishlist(_id, product);
       //return res.status(200).json(product);
@@ -89,7 +96,8 @@ module.exports = (app) => {
         { productId },
         "REMOVE_FROM_WISHLIST"
       );
-      PublishCustomerEvent(data);
+      //PublishCustomerEvent(data);
+      PublishMessage(channel, CUSTOMER_BINDING_KEY, JSON.stringify(data));
       //const product = await service.GetProductById(productId);
       //const wishlist = await customerService.AddToWishlist(_id, product);
       //return res.status(200).json(wishlist);
@@ -121,8 +129,10 @@ module.exports = (app) => {
       );
 
       //  console.log("data: ", data);
-      PublishCustomerEvent(data);
-      PublishShoppingEvent(data);
+      //PublishCustomerEvent(data);
+      PublishMessage(channel, CUSTOMER_BINDING_KEY, JSON.stringify(data));
+      // PublishShoppingEvent(data);
+      PublishMessage(channel, SHOPPING_BINDING_KEY, JSON.stringify(data));
 
       const response = {
         product: data.data.product,
@@ -153,8 +163,11 @@ module.exports = (app) => {
         "REMOVE_FROM_CART"
       );
 
-      PublishCustomerEvent(data);
-      PublishShoppingEvent(data);
+      //PublishCustomerEvent(data);
+      PublishMessage(channel, CUSTOMER_BINDING_KEY, JSON.stringify(data));
+
+      //PublishShoppingEvent(data);
+      PublishMessage(channel, SHOPPING_BINDING_KEY, JSON.stringify(data));
 
       const response = {
         product: data.data.product,

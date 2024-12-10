@@ -13,6 +13,23 @@ app.use(cors());
 app.use(logger);
 
 app.use(express.json());
+/*/
+let arr = [1,2,'a','r','t',3,'f','g', 4,5];
+
+let numbers =[];
+let strings =[];
+
+arr.forEach( (val)=>{
+    if(typeof val ==='string'){
+        strings.push(val)
+    }
+    else{
+           numbers.push(val)
+    }
+    
+})
+console.log(numbers)
+console.log(strings)*/
 
 app.use("/customer", proxy(`http://localhost:${process.env.CUSTOMER_PORT}`)); // customer
 

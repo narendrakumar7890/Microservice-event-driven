@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "NODE_ENV=prod nodemon src/index.js",
     "dev": "NODE_ENV=dev nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.5",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",

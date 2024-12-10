@@ -39,7 +39,7 @@ class ShoppingRepository {
 
   async AddCartItem(customerId, item, qty, isRemove) {
     const cart = await CartModel.findOne({ customerId: customerId });
-    console.log("AddCartItem cart: ", cart);
+    // console.log("AddCartItem cart: ", cart);
     const { _id } = item;
     if (cart) {
       let isExist = false;

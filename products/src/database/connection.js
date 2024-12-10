@@ -7,9 +7,9 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Db Connected");
+    console.log("Db Connected For Product Service");
   } catch (error) {
-    console.log("Error ============");
+    console.error("Error ============ DB Connection Failed in Product Service");
     console.log(error);
     process.exit();
   }

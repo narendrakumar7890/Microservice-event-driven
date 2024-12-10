@@ -7,9 +7,11 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Db Connected");
+    console.log("Db Connected For Customer Service");
   } catch (error) {
-    console.error("Error ============ ON DB Connection");
+    console.error(
+      "Error ============ DB Connection Failed in Customer Service"
+    );
     console.log(error);
     process.exit();
   }

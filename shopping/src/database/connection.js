@@ -7,9 +7,11 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Db Connected");
+    console.log("Db Connected For Shopping Service");
   } catch (error) {
-    console.log("Error ============");
+    console.error(
+      "Error ============ DB Connection Failed in Shopping Service"
+    );
     console.log(error);
     process.exit();
   }
