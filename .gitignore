@@ -4,3 +4,9 @@
 !.vscode/tasks.json
 .vscode/launch.json
 !.vscode/extensions.json
+
+.DS_Store
+**/.env
+**/.DS_Store
+**/node_modules
+db
